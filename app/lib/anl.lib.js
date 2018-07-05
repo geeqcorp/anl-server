@@ -34,6 +34,7 @@ exports.update = function(app) {
 
         http.request({hostname: host.host, port: 12626, path: '/heartbeat', timeout: 5000 }, (res) => {
             completed_requests++;
+            // TODO: This whole section needs some re-thinking to handle timeouts & bad requests.
         }).on('error', (e) => {
             if (e.code === 'ECONNREFUSED' || e.code === 'ECONNRESET' || e.code === 'ETIMEDOUT') {
                 completed_requests++;
