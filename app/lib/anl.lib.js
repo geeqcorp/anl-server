@@ -32,10 +32,10 @@ exports.update = function(app) {
     hostList.forEach(function(host) {
         // console.log('Contacting host ' + host.host + '...');
 
-        http.get({hostname: host.host, port: 12626, path: '/heartbeat', timeout: 5000 }, (res) => {
+        http.request({hostname: host.host, port: 12626, path: '/heartbeat', timeout: 5000 }, (res) => {
             completed_requests++;
         }).on('error', (e) => {
-            if (e.code === 'ECONNREFUSED' || e.code === 'ETIMEDOUT') {
+            if (e.code === 'ECONNREFUSED' || e.code === 'ECONNRESET' || e.code === 'ETIMEDOUT') {
                 completed_requests++;
                 let badhost = hosts.findOne({host: e.address});
                 hosts.remove(badhost);
